@@ -1,0 +1,5 @@
+*~
+*.orig
+sublime-*
+Settings.php
+/.htpasswd
