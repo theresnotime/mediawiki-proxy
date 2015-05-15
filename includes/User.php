@@ -6,7 +6,7 @@ class User {
 
 	private $db;
 
-	private $edittoken;
+	private $sessionCache = array();
 
 	private function __construct( $db ) {
 		$this->db = $db;
@@ -21,7 +21,28 @@ class User {
 	}
 
 	public function authenticated() {
-		return false;
+		return ( $this->getFromSession( 'username' ) !== '' );
+	}
+
+	public function storeInSession( $key, $value ) {
+		$_SESSION[$key] = $value;
+		$sessionCache[$key] = $value;
+	}
+
+	public function getFromSession( $key ) {
+		if ( isset( $sessionCache[$key] ) ) {
+			return $sessionCache[$key];
+		} elseif ( !isset( $_SESSION[$key] ) ) {
+			return '';
+		}
+		return $_SESSION[$key];
+	}
+
+	public function deleteFromSession( $key ) {
+		if ( isset( $sessionCache[$key] ) ) {
+			unset( $sessionCache[$key] );
+		}
+		unset( $_SESSION[$key] );
 	}
 
 	/**
@@ -31,8 +52,12 @@ class User {
 		$token = $_SESSION['token'];
 		if ( is_null( $token ) ) {
 			$token = 'A1234';
-			$_SESSION['token'] = $token;
+			$this->storeInSession( 'token', $token );
 		}
 		return sha1( $salt . $token );
+	}
+
+	public function validateToken( $token, $salt ) {
+		return $this->getToken( $salt ) === $token;
 	}
 }

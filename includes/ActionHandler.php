@@ -26,9 +26,15 @@ abstract class ActionHandler {
 	protected function writeChrome( User $user, Output &$output ) {
 		// write logged-in header
 		if ( $user->authenticated() ) {
-			$output->addTemplate( 'navbarloggedin', Array() );
+			$output->addTemplate(
+				'navbarloggedin',
+				Array(
+					'token' => $user->getToken( 'logout' ),
+					'username' => $user->getFromSession( 'username' ),
+				)
+			);
 		} else {
-			$output->addTemplate( 'navbarloggedout', Array() );
+			$output->addTemplate( 'navbarloggedout', Array( 'token' => $user->getToken( 'login' ) ) );
 		}
 	}
 

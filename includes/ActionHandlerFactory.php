@@ -7,10 +7,11 @@ class ActionHandlerFactory {
 
 	static private $handlers = array(
 		'anon' => 'Wikimedia\TorProxy\AnonActionHandler',
-		'login' => 'LoginActionHandler',
-		'home' => 'HomeActionHandler',
-		'search' => 'SearchActionHandler',
-		'article' => 'ArticleActionHandler',
+		'login' => 'Wikimedia\TorProxy\LoginActionHandler',
+		'logout' => 'Wikimedia\TorProxy\LogoutActionHandler',
+		'home' => 'Wikimedia\TorProxy\HomeActionHandler',
+		'search' => 'Wikimedia\TorProxy\SearchActionHandler',
+		'article' => 'Wikimedia\TorProxy\ArticleActionHandler',
 	);
 
 	public static function getHandler( $action ) {
