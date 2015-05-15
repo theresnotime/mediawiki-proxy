@@ -6,12 +6,15 @@ class User {
 
 	private $db;
 
-	private function __construct( $db ) {
+	private $edittoken;
+
+	private function __construct( $db, $session ) {
 		$this->db = $db;
+		$this->edittoken = $session['token'];
 	}
 
-	public static function getUser( array $session, Database $db ) {
-		return new User( $db );
+	public static function getUser( $session, Database $db ) {
+		return new User( $db, $session );
 	}
 
 	public function exists() {
@@ -20,5 +23,9 @@ class User {
 
 	public function authenticated() {
 		return false;
+	}
+
+	public function getToken( $salt ) {
+		
 	}
 }

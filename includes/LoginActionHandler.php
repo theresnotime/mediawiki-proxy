@@ -1,7 +1,7 @@
 <?php
 namespace Wikimedia\TorProxy;
 
-class AnonActionHandler extends ActionHandler {
+class LoginActionHandler extends ActionHandler {
 
 
 	public function exec( User $user, array $request, Output &$output ) {

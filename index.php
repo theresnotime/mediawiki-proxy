@@ -8,16 +8,16 @@ session_start();
 
 $logger = new Logger( $TorProxyLogConfig );
 $db = new Database( $TorProxyDBConfig, $logger );
-$output = new Output();
-
-
-
+$output = new Output( $TorProxyTemplateConfig );
 $user = User::getUser( $_SESSION, $db );
+
 $action = isset( $_GET['action'] ) ?: 'anon';
 $request = $_REQUEST;
 
 $handler = ActionHandlerFactory::getHandler( $action );
 $handler->checkAccess( $user );
-$handler->exec( $user, $request, $output );
+$handler->checkAccess( $user );
+
+$handler->process( $user, $request, $output );
 
 $output->show();

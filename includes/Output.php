@@ -10,8 +10,23 @@ class Output {
 
 	private $redirectUrl;
 
-	public function addTemplate( $template, $data ) {
-		$this->html .= render( $template, $data );
+	private $templateConfig;
+
+	public function __construct( array $templateConfig ) {
+		$this->templateConfig = $templateConfig;
+	}
+
+	public function addTemplate( $name, $data ) {
+		$template = Templates::getTemplate( $name, $this->templateConfig );
+		$this->html .= Templates::renderTemplate( $template, $data );
+	}
+
+	/**
+	 * When you need to render a template to include in another template
+	 */
+	public function getTemplateHtml( $name, $data ) {
+		$template = Templates::getTemplate( $name, $this->templateConfig );
+		return Templates::renderTemplate( $template, $data );
 	}
 
 	public function addHtml( $html ) {
@@ -26,23 +41,22 @@ class Output {
 
 	public function show() {
 		if ( $this->redirect ) {
-			self::outputRedirect( $this->redirectUrl );
+			$this->outputRedirect( $this->redirectUrl );
 		} else {
-			self::outputHtml( $this->html );
+			$this->outputHtml( $this->html );
 		}
 	}
 
-	public static function outputRedirect( $url ) {
+	public function outputRedirect( $url ) {
 		self::outputHeaders();
 		header( "Location: $url" );
 	}
 
 
-	public static function outputHtml( $html ) {
+	public function outputHtml( $html ) {
 		self::outputHeaders();
-		self::outputStart();
-		echo $html;
-		self::outputEnd();
+		$main = Templates::getTemplate( 'main', $this->templateConfig );
+		echo Templates::renderTemplate( $main, Array( 'body' => $html ) );
 	}
 
 	public static function outputHeaders() {
@@ -53,29 +67,9 @@ class Output {
 		header( 'X-XSS-Protection: 1; mode=block' );
 		header( 'X-Content-Type-Options: nosniff' );
 		header( 'X-Frame-Options: DENY' );
-		header( "Content-Security-Policy: $csp" );
-		header( "X-Content-Security-Policy: $csp" );
-		header( "X-WebKit-CSP: $csp" );
+		#header( "Content-Security-Policy: $csp" );
+		#header( "X-Content-Security-Policy: $csp" );
+		#header( "X-WebKit-CSP: $csp" );
 	}
 
-
-	public static function outputStart() {
-		echo <<<EOD
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-<meta charset="UTF-8" />
-<title>TorProxy</title>
-</head>
-<body>
-EOD;
-
-	}
-
-	public static function outputEnd() {
-		echo <<<EOD
-</body>
-</html>
-EOD;
-	}
 }
