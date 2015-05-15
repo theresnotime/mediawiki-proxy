@@ -8,13 +8,12 @@ class User {
 
 	private $edittoken;
 
-	private function __construct( $db, $session ) {
+	private function __construct( $db ) {
 		$this->db = $db;
-		$this->edittoken = $session['token'];
 	}
 
-	public static function getUser( $session, Database $db ) {
-		return new User( $db, $session );
+	public static function getUser( Database $db ) {
+		return new User( $db );
 	}
 
 	public function exists() {
@@ -25,7 +24,15 @@ class User {
 		return false;
 	}
 
+	/**
+	 * TODO: replace this with MW one
+	 */
 	public function getToken( $salt ) {
-		
+		$token = $_SESSION['token'];
+		if ( is_null( $token ) ) {
+			$token = 'A1234';
+			$_SESSION['token'] = $token;
+		}
+		return sha1( $salt . $token );
 	}
 }

@@ -6,6 +6,9 @@ class LoginActionHandler extends ActionHandler {
 
 	public function exec( User $user, array $request, Output &$output ) {
 
+		
+
+		/*
 		$html = $output->getTemplateHtml( 'heading', Array( 'text'=>'Use Tor to edit Wikipedia.' ) );
 
 		$html .= $output->getTemplateHtml( 'paragraph', Array( 'header'=>false, 'body' => "Intro paragraph" ) );
@@ -15,6 +18,7 @@ class LoginActionHandler extends ActionHandler {
 		$html .= $output->getTemplateHtml( 'paragraph', Array( 'header'=>'Why privacy?', 'body' => "zxcv" ) );
 
 		$output->addTemplate( 'content', Array( 'html' => $html ) );
+		*/
 
 	}
 
