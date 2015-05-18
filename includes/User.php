@@ -51,6 +51,7 @@ class User {
 	public function getToken( $salt ) {
 		$token = $_SESSION['token'];
 		if ( is_null( $token ) ) {
+			Settings::getInstance()->getLogger()->log( 'Generating token' );
 			$token = 'A1234';
 			$this->storeInSession( 'token', $token );
 		}
