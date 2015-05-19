@@ -11,13 +11,13 @@ abstract class ActionHandler {
 		return true;
 	}
 
-	final public function process( User $user, array $request, Output &$output ) {
+	final public function process( User $user, array $request, Output &$output, Settings $config ) {
 		$this->validateRequest( $request );
 		$this->writeChrome( $user, $output );
-		$this->exec( $user, $request, $output );
+		$this->exec( $user, $request, $output, $config );
 	}
 
-	abstract public function exec( User $user, array $request, Output &$output );
+	abstract public function exec( User $user, array $request, Output &$output, Settings $config );
 
 	protected function validateRequest( $request ) {
 		// noop

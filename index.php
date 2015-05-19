@@ -12,7 +12,14 @@ include 'Settings.php';
 $logger = new Logger( $TorProxyLogConfig );
 $db = new Database( $TorProxyDBConfig, $logger );
 
-Settings::getInstance()->setVars( $db, $logger );
+$config = Settings::getInstance();
+$config->setVars(
+	$db,
+	$logger,
+	$TorProxyOAuthConfig,
+	$TorProxyWikiConfig,
+	$TorProxyConfig
+);
 
 $output = new Output( $TorProxyTemplateConfig );
 $user = User::getUser( $db );
@@ -24,6 +31,6 @@ $handler = ActionHandlerFactory::getHandler( $action );
 $handler->checkAccess( $user );
 $handler->checkAccess( $user );
 
-$handler->process( $user, $request, $output );
+$handler->process( $user, $request, $output, $config );
 
 $output->show();

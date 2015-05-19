@@ -4,7 +4,7 @@ namespace Wikimedia\TorProxy;
 class HomeActionHandler extends ActionHandler {
 
 
-	public function exec( User $user, array $request, Output &$output ) {
+	public function exec( User $user, array $request, Output &$output, Settings $config ) {
 		Settings::getInstance()->getLogger()->log( 'Checking authz stage of user: (' . $user->getWikiId() . ') \'' . $user->authorized() . '\'' );
 		switch( $user->authorized() ) {
 			case 'unauthorized':

@@ -4,7 +4,9 @@ namespace Wikimedia\TorProxy;
 class LogoutActionHandler extends ActionHandler {
 
 
-	public function exec( User $user, array $request, Output &$output ) {
+	public function exec( User $user, array $request, Output &$output, Settings $config ) {
+
+		$proxyConfig = $config->getProxyConfig();
 
 		if ( !$user->validateToken( $request['token'], 'logout' ) ) {
 			throw new \Exception( "Logout csrf" );
@@ -14,7 +16,7 @@ class LogoutActionHandler extends ActionHandler {
 		session_regenerate_id(true);
 		session_start();
 
-		$output->setRedirect( 'http://localhost/torproxy/' ); // TODO: Config base url
+		$output->setRedirect( $proxyConfig['base_url'] );
 	}
 
 	protected function requireLoggedIn() {

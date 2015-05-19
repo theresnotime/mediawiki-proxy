@@ -4,9 +4,10 @@ namespace Wikimedia\TorProxy;
 class LoginActionHandler extends ActionHandler {
 
 
-	public function exec( User $user, array $request, Output &$output ) {
-
-		global $TorProxyOAuthConfig; // TODO: fix
+	public function exec( User $user, array $request, Output &$output, Settings $config ) {
+		$OAuthConfig = $config->getOAuthConfig();
+		$wikiConfig = $config->getWikiConfig();
+		$proxyConfig = $config->getProxyConfig();
 
 		$stage = isset( $request['stage'] ) ? $request['stage'] : 'none';
 		$token = isset( $request['token'] ) ? $request['token'] : 'none';
@@ -17,22 +18,21 @@ class LoginActionHandler extends ActionHandler {
 			throw new \Exception( 'Invalid login token' );
 		}
 
-		$config = new \MWOAuthClientConfig(
-			'http://localhost/w/index.php?title=Special:OAuth', // url to use
+		$clientConfig = new \MWOAuthClientConfig(
+			$wikiConfig['base_url'] . 'index.php?title=Special:OAuth', // url to use
 			false, // do we use SSL? (we should probably detect that from the url)
 			false // do we validate the SSL certificate? Always use 'true' in production.
 		);
-		$config->canonicalServerUrl = 'http://localhost';
-		// Optional clean url here (i.e., to work with mobile), otherwise the
-		// base url just has /authorize& added
-		$config->redirURL = 'http://localhost/wiki/Special:OAuth/authorize?';
+		$clientConfig->canonicalServerUrl = $wikiConfig['canonical_url'];
+		$clientConfig->redirURL = $wikiConfig['base_url_clean'] . 'Special:OAuth/authorize?';
+
 		$cmrToken = new \OAuthToken(
-			$TorProxyOAuthConfig['key'],
-			$TorProxyOAuthConfig['secret']
+			$OAuthConfig['key'],
+			$OAuthConfig['secret']
 		);
-		$client = new \MWOAuthClient( $config, $cmrToken );
+		$client = new \MWOAuthClient( $clientConfig, $cmrToken );
 		$client->setCallback(
-			'http://localhost/torproxy/index.php?action=login&stage=finish&token='
+			$proxyConfig['base_url'] . 'index.php?action=login&stage=finish&token='
 				. $user->getToken( 'oauth' )
 		);
 
@@ -41,7 +41,7 @@ class LoginActionHandler extends ActionHandler {
 			$output->setRedirect( $url );
 		} elseif( $stage === 'finish' ) {
 			$this->LoginFinish( $user, $request, $client );
-			$output->setRedirect( 'http://localhost/torproxy/index.php?action=home' ); //TODO: baseurl
+			$output->setRedirect( $proxyConfig['base_url'] . 'index.php?action=home' );
 		} else {
 			throw new \Exception( 'Invalid login stage' );
 		}

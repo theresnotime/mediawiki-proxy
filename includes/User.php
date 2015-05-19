@@ -115,7 +115,7 @@ class User {
 	 * TODO: replace this with MW one
 	 */
 	public function getToken( $salt ) {
-		$token = $_SESSION['token'];
+		$token = isset( $_SESSION['token'] ) ? $_SESSION['token'] : null;
 		if ( is_null( $token ) ) {
 			Settings::getInstance()->getLogger()->log( 'Generating token' );
 			$token = 'A1234';

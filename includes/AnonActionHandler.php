@@ -4,7 +4,7 @@ namespace Wikimedia\TorProxy;
 class AnonActionHandler extends ActionHandler {
 
 
-	public function exec( User $user, array $request, Output &$output ) {
+	public function exec( User $user, array $request, Output &$output, Settings $config ) {
 
 		$html = $output->getTemplateHtml( 'heading', Array( 'text'=>'Use Tor to edit Wikipedia.' ) );
 
