@@ -23,4 +23,8 @@ class Database {
 		}
 	}
 
+	public function getDb() {
+		return $this->db;
+	}
+
 }

@@ -11,6 +11,6 @@ class Logger {
 	}
 
 	public function log( $msg ) {
-		file_put_contents( $this->logfile, $msg, FILE_APPEND );
+		file_put_contents( $this->logfile, "$msg\n", FILE_APPEND );
 	}
 }

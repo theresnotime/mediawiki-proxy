@@ -76,8 +76,10 @@ class LoginActionHandler extends ActionHandler {
 
 		session_regenerate_id();
 		$identity = $client->identify( $accessToken );
-		$user->storeInSession('oauthtoken', "{$accessToken->key}:{$accessToken->secret}" );
-		$user->storeInSession('username', $identity->username );
+		$user->storeInSession( 'oauthtoken', "{$accessToken->key}:{$accessToken->secret}" );
+		$user->storeInSession( 'username', $identity->username );
+		$user->storeInSession( 'wikiid', $identity->sub );
+		$user->setWikiId( $identity->sub );
 
 	}
 
