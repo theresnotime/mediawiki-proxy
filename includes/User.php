@@ -31,6 +31,10 @@ class User {
 		return new User( $db );
 	}
 
+	public function getOAuthToken() {
+		return $this->oauthToken;
+	}
+
 	public function setWikiId( $id ) {
 		$this->wikiId = $id;
 		$this->storeInSession( 'wiki_id', $id );
@@ -40,10 +44,14 @@ class User {
 		return $this->wikiId;
 	}
 
+	public function getUsername() {
+		return $this->username;
+	}
+
 	private function loadFromSession() {
 		$this->wikiId = $this->getFromSession( 'wiki_id' );
 		$this->username = $this->getFromSession( 'username' );
-		$this->oauthToken = $this->getFromSession( 'oauthToken' );
+		$this->oauthToken = $this->getFromSession( 'oauthtoken' );
 	}
 
 	private function load() {

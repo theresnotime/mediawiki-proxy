@@ -11,6 +11,7 @@ require_once './includes/LoginActionHandler.php';
 require_once './includes/LogoutActionHandler.php';
 require_once './includes/AuthzReqActionHandler.php';
 
+require_once './includes/Wiki.php';
 require_once './includes/Output.php';
 require_once './includes/Templates.php';
 require_once './includes/User.php';
