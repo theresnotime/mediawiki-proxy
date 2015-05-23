@@ -13,6 +13,8 @@ class ActionHandlerFactory {
 		'search' => 'Wikimedia\TorProxy\SearchActionHandler',
 		'article' => 'Wikimedia\TorProxy\ArticleActionHandler',
 		'authzreq' => 'Wikimedia\TorProxy\AuthzReqActionHandler',
+		'search' => 'Wikimedia\TorProxy\SearchActionHandler',
+		'edit' => 'Wikimedia\TorProxy\EditActionHandler',
 	);
 
 	public static function getHandler( $action ) {

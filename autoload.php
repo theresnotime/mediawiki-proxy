@@ -10,6 +10,8 @@ require_once './includes/AnonActionHandler.php';
 require_once './includes/LoginActionHandler.php';
 require_once './includes/LogoutActionHandler.php';
 require_once './includes/AuthzReqActionHandler.php';
+require_once './includes/SearchActionHandler.php';
+require_once './includes/EditActionHandler.php';
 
 require_once './includes/Wiki.php';
 require_once './includes/Output.php';

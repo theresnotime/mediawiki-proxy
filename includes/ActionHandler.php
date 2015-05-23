@@ -31,6 +31,8 @@ abstract class ActionHandler {
 				Array(
 					'token' => $user->getToken( 'logout' ),
 					'username' => $user->getFromSession( 'username' ),
+					'ip' => $_SERVER['REMOTE_ADDR'],
+					'ua' => $_SERVER['HTTP_USER_AGENT'],
 				)
 			);
 		} else {

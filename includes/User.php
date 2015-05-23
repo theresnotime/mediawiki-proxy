@@ -135,4 +135,19 @@ class User {
 	public function validateToken( $token, $salt ) {
 		return $this->getToken( $salt ) === $token;
 	}
+
+	public function getUserStats() {
+		$queue = array( 1 => 0, 2 => 0 );
+		$stage = false;
+		$count = false;
+		$stmt = $this->db->getDb()->prepare( 'SELECT COUNT(*) as count, `authz_stage` as stage FROM `users` GROUP BY `authz_stage`' );
+		$stmt->execute();
+		$stmt->bind_result( $count, $stage );
+		while ( $stmt->fetch() ) {
+			$queue[$stage] = $count;
+		}
+		$stmt->close();
+		Settings::getInstance()->getLogger()->log( __METHOD__ . " queue is: " . print_r( $queue, true) );
+		return $queue;
+	}
 }
