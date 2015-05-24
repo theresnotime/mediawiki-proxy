@@ -4,7 +4,7 @@ namespace Wikimedia\TorProxy;
 session_start();
 
 include_once 'autoload.php';
-include 'Settings.php';
+require 'config.php';
 
 $output = new Output( $TorProxyTemplateConfig );
 
@@ -12,13 +12,19 @@ try {
 	$logger = new Logger( $TorProxyLogConfig );
 	$db = new Database( $TorProxyDBConfig, $logger );
 
+	$conn = array(
+		'ip' => $_SERVER['REMOTE_ADDR'],
+		'ua' => $_SERVER['HTTP_USER_AGENT'],
+	);
+
 	$config = Settings::getInstance();
 	$config->setVars(
 		$db,
 		$logger,
 		$TorProxyOAuthConfig,
 		$TorProxyWikiConfig,
-		$TorProxyConfig
+		$TorProxyConfig,
+		$conn
 	);
 
 

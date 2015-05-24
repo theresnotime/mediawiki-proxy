@@ -31,13 +31,21 @@ abstract class ActionHandler {
 				Array(
 					'token' => $user->getToken( 'logout' ),
 					'username' => $user->getFromSession( 'username' ),
-					'ip' => $_SERVER['REMOTE_ADDR'],
-					'ua' => $_SERVER['HTTP_USER_AGENT'],
 				)
 			);
 		} else {
 			$output->addTemplate( 'navbarloggedout', Array( 'token' => $user->getToken( 'login' ) ) );
 		}
+
+		$connection = Settings::getInstance()->getConnection();
+
+		$output->addTemplate(
+			'footer',
+			array(
+				'ip' => $connection['ip'],
+				'ua' => $connection['ua'],
+			)
+		);
 	}
 
 	protected function requireLoggedIn() {

@@ -20,5 +20,5 @@ require_once './includes/User.php';
 require_once './includes/Logger.php';
 require_once './includes/Database.php';
 
-
+require_once './includes/Settings.php';
 
