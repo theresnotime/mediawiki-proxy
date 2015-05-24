@@ -15,7 +15,7 @@ class Wiki {
 		$this->proxyConfig = $proxyConfig;
 	}
 
-	public function doEdit( $user, $title, $wikitext ) {
+	public function doEdit( $user, $title, $wikitext, $summary, $minor, $watch ) {
 		list( $accessKey, $accessSecret ) = explode( ':', $user->getOAuthToken() );
 		$accessToken = new \OAuthToken( $accessKey, $accessSecret );
 
@@ -23,11 +23,18 @@ class Wiki {
 		$apiParams = array(
 			'action' => 'edit',
 			'title' => $title,
-			'summary' => 'edit from tor',
+			'summary' => $summary,
 			'text' => $wikitext,
 			'token' => $csrftoken,
 			'format' => 'json',
 		);
+
+		if ( $minor !== false ) {
+			$apiParams['minor'] = $minor;
+		}
+		if ( $watch !== false ) {
+			$apiParams['watchlist'] = 'watch';
+		}
 
 		$client = $this->getOAuthClient( $user );
 		$client->setExtraParams( $apiParams ); // sign these too
@@ -47,11 +54,35 @@ class Wiki {
 	public function getWikitext( $user, $title ) {
 		list( $accessKey, $accessSecret ) = explode( ':', $user->getOAuthToken() );
 		$accessToken = new \OAuthToken( $accessKey, $accessSecret );
+
+		$client = $this->getOAuthClient( $user );
+		$apiParams = array(
+			'titles' => $title,
+			'action' => 'query',
+			'format' => 'json',
+		);
+		$ret = $client->makeOAuthCall(
+			$accessToken,
+			$this->wikiConfig['base_url'] . 'api.php',
+			true,
+			array(
+				'titles' => $title,
+				'action' => 'query',
+				'format' => 'json',
+			)
+		);
+		Settings::getInstance()->getLogger()->log( "Page info: '$ret'" );
+		$info = json_decode( $ret, true ); //srsly?
+Settings::getInstance()->getLogger()->log( "Page info Array: " . print_r( $info, true ) );
+		if ( isset( $info['query']['pages']['-1'] ) ) {
+			// page doesn't exist yet, we're not supporting.
+			return false;
+		}
+
 		$params = array(
 			'title' => $title,
 			'action' => 'raw',
 		);
-		$client = $this->getOAuthClient( $user );
 		$wikitext = $client->makeOAuthCall(
 			$accessToken,
 			$this->wikiConfig['base_url'] . 'index.php',
