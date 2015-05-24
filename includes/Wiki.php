@@ -22,7 +22,7 @@ class Wiki {
 		$apiParams = array(
 			'action' => 'query',
 			'list' => 'search',
-			'srwhat' => 'title',
+			#'srwhat' => 'title',
 			'srsearch' => $term,
 			'srprop' => 'size|wordcount|snippet',
 			'format' => 'json',
