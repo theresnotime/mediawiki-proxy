@@ -18,6 +18,9 @@ class ActionHandlerFactory {
 	);
 
 	public static function getHandler( $action ) {
+		if ( !isset( self::$handlers[$action] ) ) {
+			throw new \Exception( 'invalid action' );
+		}
 		$handlerClass = self::$handlers[$action];
 		return new $handlerClass();
 	}

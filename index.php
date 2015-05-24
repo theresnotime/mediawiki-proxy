@@ -9,28 +9,37 @@ session_start();
 include_once 'autoload.php';
 include 'Settings.php';
 
-$logger = new Logger( $TorProxyLogConfig );
-$db = new Database( $TorProxyDBConfig, $logger );
-
-$config = Settings::getInstance();
-$config->setVars(
-	$db,
-	$logger,
-	$TorProxyOAuthConfig,
-	$TorProxyWikiConfig,
-	$TorProxyConfig
-);
-
 $output = new Output( $TorProxyTemplateConfig );
-$user = User::getUser( $db );
 
-$action = isset( $_GET['action'] ) ? $_GET['action'] : 'anon';
-$request = $_REQUEST;
+try {
+	$logger = new Logger( $TorProxyLogConfig );
+	$db = new Database( $TorProxyDBConfig, $logger );
 
-$handler = ActionHandlerFactory::getHandler( $action );
-$handler->checkAccess( $user );
-$handler->checkAccess( $user );
+	$config = Settings::getInstance();
+	$config->setVars(
+		$db,
+		$logger,
+		$TorProxyOAuthConfig,
+		$TorProxyWikiConfig,
+		$TorProxyConfig
+	);
 
-$handler->process( $user, $request, $output, $config );
+
+	$user = User::getUser( $db );
+
+	$action = isset( $_GET['action'] ) ? $_GET['action'] : 'anon';
+	$request = $_REQUEST;
+
+	$handler = ActionHandlerFactory::getHandler( $action );
+	$handler->checkAccess( $user );
+	$handler->checkAccess( $user );
+
+	$handler->process( $user, $request, $output, $config );
+} catch ( \Exception $e ) {
+	$output->addTemplate(
+		'msgerror',
+		array( 'message' => $e->getMessage() )
+	);
+}
 
 $output->show();
