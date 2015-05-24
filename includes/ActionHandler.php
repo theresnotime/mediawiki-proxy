@@ -44,6 +44,7 @@ abstract class ActionHandler {
 			array(
 				'ip' => $connection['ip'],
 				'ua' => $connection['ua'],
+				'xff' => isset( $connection['xff1'] ) ? $connection['xff1'] : false,
 			)
 		);
 	}
