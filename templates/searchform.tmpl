@@ -1,7 +1,8 @@
-<form action="index.php?action=search" method=post>
+<form action="index.php" method=GET>
 <div id="searchForm" style="display:block">
-	<input type="search" name="search" placeholder="Search" title="Search" id="searchInput" tabindex="1" autocomplete="off">
+	<input type="hidden" name="action" value="search" />
+	<input type="search" name="search" placeholder="Search" title="Search" id="searchInput" size="60" autocomplete="off">
 	<input type="submit" name="go" value="Go" title="Search" id="searchButton" class="searchButton">
-	<input type="hidden" name="token" value="{{token}}" />
+	<!-- <input type="hidden" name="token" value="{{token}}" /> -->
 </div>
 </form>

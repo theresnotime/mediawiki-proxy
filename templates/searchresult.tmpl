@@ -1,5 +1,13 @@
+{{#if empty}}
+<h1 class="page-header">No results</h1>
+<ul>
+  <li>Edit article '<a href="index.php?action=edit&title={{termurl}}">{{term}}</a>'</li>
+</ul>
+{{else}}
+<h1 class="page-header">Search results</h1>
 <ul>
 {{#each results}}
-<li><a href="index.php?action=edit&title={{.}}">{{.}}</a></li>
+<li><a href="index.php?action=edit&title={{./titleurl}}">{{./title}}</a>{{#if ./snippet}} - {{./snippet}}{{/if}}</li>
 {{/each}}
 </ul>
+{{/if}}

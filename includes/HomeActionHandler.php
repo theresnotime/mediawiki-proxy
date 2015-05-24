@@ -54,7 +54,7 @@ class HomeActionHandler extends ActionHandler {
 					'paragraph',
 					Array(
 						'header'=>'Search',
-						'body' => 'instructions'
+						'body' => 'Search for a page by title'
 					)
 				);
 

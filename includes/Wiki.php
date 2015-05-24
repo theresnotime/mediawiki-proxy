@@ -15,6 +15,30 @@ class Wiki {
 		$this->proxyConfig = $proxyConfig;
 	}
 
+	public function search( $user, $term ) {
+		list( $accessKey, $accessSecret ) = explode( ':', $user->getOAuthToken() );
+		$accessToken = new \OAuthToken( $accessKey, $accessSecret );
+		# action=query&list=search&srwhat=title&srsearch=Page&srprop=size|wordcount|timestamp|snippet|titlesnippet
+		$apiParams = array(
+			'action' => 'query',
+			'list' => 'search',
+			'srwhat' => 'title',
+			'srsearch' => $term,
+			'srprop' => 'size|wordcount|snippet',
+			'format' => 'json',
+		);
+
+		$client = $this->getOAuthClient( $user );
+		$ret = $client->makeOAuthCall(
+			$accessToken,
+			$this->wikiConfig['base_url'] . 'api.php',
+			true,
+			$apiParams
+		);
+
+		return json_decode( $ret );
+	}
+
 	public function doEdit( $user, $title, $wikitext, $summary, $minor, $watch ) {
 		list( $accessKey, $accessSecret ) = explode( ':', $user->getOAuthToken() );
 		$accessToken = new \OAuthToken( $accessKey, $accessSecret );
@@ -65,11 +89,7 @@ class Wiki {
 			$accessToken,
 			$this->wikiConfig['base_url'] . 'api.php',
 			true,
-			array(
-				'titles' => $title,
-				'action' => 'query',
-				'format' => 'json',
-			)
+			$apiParams
 		);
 		Settings::getInstance()->getLogger()->log( "Page info: '$ret'" );
 		$info = json_decode( $ret, true ); //srsly?
