@@ -15,6 +15,52 @@ class Wiki {
 		$this->proxyConfig = $proxyConfig;
 	}
 
+	public function doEdit( $user, $title, $wikitext ) {
+		list( $accessKey, $accessSecret ) = explode( ':', $user->getOAuthToken() );
+		$accessToken = new \OAuthToken( $accessKey, $accessSecret );
+
+		$csrftoken = $this->getUserWikiEditToken( $user, $accessToken );
+		$apiParams = array(
+			'action' => 'edit',
+			'title' => $title,
+			'summary' => 'edit from tor',
+			'text' => $wikitext,
+			'token' => $csrftoken,
+			'format' => 'json',
+		);
+
+		$client = $this->getOAuthClient( $user );
+		$client->setExtraParams( $apiParams ); // sign these too
+		$result = $client->makeOAuthCall(
+			$accessToken,
+			$this->wikiConfig['base_url'] . 'api.php',
+			true,
+			$apiParams
+		);
+
+		Settings::getInstance()->getLogger()->log( "Edit result: '$result'" );
+
+		return json_decode( $result );
+
+	}
+
+	public function getWikitext( $user, $title ) {
+		list( $accessKey, $accessSecret ) = explode( ':', $user->getOAuthToken() );
+		$accessToken = new \OAuthToken( $accessKey, $accessSecret );
+		$params = array(
+			'title' => $title,
+			'action' => 'raw',
+		);
+		$client = $this->getOAuthClient( $user );
+		$wikitext = $client->makeOAuthCall(
+			$accessToken,
+			$this->wikiConfig['base_url'] . 'index.php',
+			true,
+			$params
+		);
+		return $wikitext;
+	}
+
 	public function editNotificationPage( $user, $wikitext ) {
 		list( $accessKey, $accessSecret ) = explode( ':', $user->getOAuthToken() );
 		$accessToken = new \OAuthToken( $accessKey, $accessSecret );
