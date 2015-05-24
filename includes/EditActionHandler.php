@@ -68,15 +68,16 @@ class EditActionHandler extends ActionHandler {
 				$html .= $output->getTemplateHtml(
 					'msgerror',
 					Array(
-						'code'=>$result->error->code,
-						'message'=>$result->error->info,
+						'code' => $result->error->code,
+						'message' => $result->error->info,
 					)
 				);
 			} else {
 				$html .= $output->getTemplateHtml(
 					'msgsuccess',
 					Array(
-						'title'=>$result->edit->title,
+						'title' => $title,
+						'titleurl' => $wikiConfig['base_url_clean'] . urlencode( $title ),
 					)
 				);
 			}

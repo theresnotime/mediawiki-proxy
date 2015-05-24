@@ -67,9 +67,9 @@ class Output {
 		header( 'X-XSS-Protection: 1; mode=block' );
 		header( 'X-Content-Type-Options: nosniff' );
 		header( 'X-Frame-Options: DENY' );
-		#header( "Content-Security-Policy: $csp" );
-		#header( "X-Content-Security-Policy: $csp" );
-		#header( "X-WebKit-CSP: $csp" );
+		header( "Content-Security-Policy: $csp" );
+		header( "X-Content-Security-Policy: $csp" );
+		header( "X-WebKit-CSP: $csp" );
 	}
 
 }
