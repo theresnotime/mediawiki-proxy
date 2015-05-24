@@ -1,6 +1,4 @@
 
-* Link on success
-
 
 * Check approved
 * Throttle
