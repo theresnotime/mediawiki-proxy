@@ -29,7 +29,7 @@ class SearchActionHandler extends ActionHandler {
 				$res[] = array(
 					'titleurl' => urlencode($t->title),
 					'title' => $t->title,
-					'snippet' => $t->snippet
+					'snippet' => strip_tags( $t->snippet )
 				);
 			}
 		}
