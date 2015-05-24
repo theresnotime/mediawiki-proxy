@@ -24,12 +24,14 @@ class SearchActionHandler extends ActionHandler {
 		$results = $wiki->search( $user, $searchterm );
 
 		$res = array();
-		foreach( $results->query->search as $t ) {
-			$res[] = array(
-				'titleurl' => urlencode($t->title),
-				'title' => $t->title,
-				'snippet' => $t->snippet
-			);
+		if ( isset( $results->query->search ) ) {
+			foreach( $results->query->search as $t ) {
+				$res[] = array(
+					'titleurl' => urlencode($t->title),
+					'title' => $t->title,
+					'snippet' => $t->snippet
+				);
+			}
 		}
 		$items = array(
 			'results' => $res,
