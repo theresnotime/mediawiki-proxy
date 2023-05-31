@@ -3,3 +3,5 @@
 sublime-*
 config.php
 /.htpasswd
+
+/vendor/

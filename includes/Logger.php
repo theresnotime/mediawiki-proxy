@@ -2,15 +2,18 @@
 
 namespace Wikimedia\TorProxy;
 
-class Logger {
+class Logger
+{
 
-	private $logfile;
+    private $logfile;
 
-	public function __construct( $config ) {
-		$this->logfile = $config['filename'];
-	}
+    public function __construct( $config )
+    {
+        $this->logfile = $config['filename'];
+    }
 
-	public function log( $msg ) {
-		file_put_contents( $this->logfile, "$msg\n", FILE_APPEND );
-	}
+    public function log( $msg )
+    {
+        file_put_contents($this->logfile, "$msg\n", FILE_APPEND);
+    }
 }

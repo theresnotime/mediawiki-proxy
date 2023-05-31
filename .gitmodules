@@ -1,0 +1,3 @@
+[submodule "mwoauth-php"]
+    path = lib/mwoauth-php
+    url = https://github.com/theresnotime/mwoauth-php

@@ -3,26 +3,28 @@
 namespace Wikimedia\TorProxy;
 
 
-class ActionHandlerFactory {
+class ActionHandlerFactory
+{
 
-	static private $handlers = array(
-		'anon' => 'Wikimedia\TorProxy\AnonActionHandler',
-		'login' => 'Wikimedia\TorProxy\LoginActionHandler',
-		'logout' => 'Wikimedia\TorProxy\LogoutActionHandler',
-		'home' => 'Wikimedia\TorProxy\HomeActionHandler',
-		'search' => 'Wikimedia\TorProxy\SearchActionHandler',
-		'article' => 'Wikimedia\TorProxy\ArticleActionHandler',
-		'authzreq' => 'Wikimedia\TorProxy\AuthzReqActionHandler',
-		'search' => 'Wikimedia\TorProxy\SearchActionHandler',
-		'edit' => 'Wikimedia\TorProxy\EditActionHandler',
-	);
+    static private $handlers = array(
+    'anon' => 'Wikimedia\TorProxy\AnonActionHandler',
+    'login' => 'Wikimedia\TorProxy\LoginActionHandler',
+    'logout' => 'Wikimedia\TorProxy\LogoutActionHandler',
+    'home' => 'Wikimedia\TorProxy\HomeActionHandler',
+    'search' => 'Wikimedia\TorProxy\SearchActionHandler',
+    'article' => 'Wikimedia\TorProxy\ArticleActionHandler',
+    'authzreq' => 'Wikimedia\TorProxy\AuthzReqActionHandler',
+    'search' => 'Wikimedia\TorProxy\SearchActionHandler',
+    'edit' => 'Wikimedia\TorProxy\EditActionHandler',
+    );
 
-	public static function getHandler( $action ) {
-		if ( !isset( self::$handlers[$action] ) ) {
-			throw new \Exception( 'invalid action' );
-		}
-		$handlerClass = self::$handlers[$action];
-		return new $handlerClass();
-	}
+    public static function getHandler( $action )
+    {
+        if (!isset(self::$handlers[$action]) ) {
+            throw new \Exception('invalid action');
+        }
+        $handlerClass = self::$handlers[$action];
+        return new $handlerClass();
+    }
 
 }
