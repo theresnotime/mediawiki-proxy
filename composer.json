@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "zordius/lightncandy": "1.2.6"
+        "zordius/lightncandy": "^1.2.6"
     },
     "require-dev": {
 		"mediawiki/mediawiki-codesniffer": "41.0.0",

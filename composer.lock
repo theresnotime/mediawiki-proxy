@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec9f17232cd933f5d5cc7e1909b13989",
+    "content-hash": "02e60b39daea700d870af9b37f60539b",
     "packages": [
         {
             "name": "zordius/lightncandy",
