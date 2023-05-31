@@ -30,10 +30,11 @@
 			"phpcbf --ignore=vendor/* includes/ index.php"
 		],
 		"test": [
-			"parallel-lint . --exclude node_modules --exclude vendor",
+			"@parallel-lint",
 			"@phpcs",
 			"minus-x check ."
 		],
+        "parallel-lint": "parallel-lint . --exclude vendor --colors --blame",
 		"phan": "phan -d . --long-progress-bar",
 		"phpcs": "phpcs -sp --cache --ignore=vendor/* includes/ index.php"
 	}
