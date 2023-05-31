@@ -1,6 +1,8 @@
 {
     "name": "theresnotime/mediawiki-proxy",
     "type": "project",
+    "description": "Proxy for editing mediawiki via Tor",
+    "license": "GPL-3.0-or-later",
     "autoload": {
         "psr-4": {
             "Wikimedia\\TorProxy\\": "includes/"
@@ -13,7 +15,7 @@
         }
     ],
     "require": {
-        "zordius/lightncandy": "dev-master"
+        "zordius/lightncandy": "1.2.6"
     },
     "require-dev": {
 		"mediawiki/mediawiki-codesniffer": "41.0.0",
